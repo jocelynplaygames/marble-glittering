@@ -1,0 +1,194 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+  // Further reading:
+  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
+  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+  url      = env("DATABASE_URL")
+}
+
+model Example {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Necessary for NextAuth
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? // @db.Text
+  refresh_token_expires_in Int?
+  access_token             String? // @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? // @db.Text
+  session_state            String?
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  username String @unique
+
+  createdMarbles Marble[]       @relation("CreatedBy")
+  subscriptions  Subscription[]
+  posts          Post[]
+  votes          Vote[]
+  comments       Comment[]
+  commentVotes   CommentVote[]
+
+  memoryAlbums MemoryAlbum[]
+}
+
+// My Models
+enum VoteType {
+  UP
+  DOWN
+}
+
+model Marble {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  creator   User   @relation("CreatedBy", fields: [creatorId], references: [id])
+  creatorId String
+
+  posts       Post[]
+  subscribers Subscription[]
+
+  @@index([name])
+}
+
+model Subscription {
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  marble   Marble @relation(fields: [marbleId], references: [id])
+  marbleId String
+
+  @@id([userId, marbleId])
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+  marble   Marble @relation(fields: [marbleId], references: [id])
+  marbleId String
+
+  comments Comment[]
+  votes    Vote[]
+
+  memoryAlbumItems MemoryAlbumItem[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  text      String
+  createdAt DateTime @default(now())
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+  post     Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId   String
+
+  commentId String?
+  replyToId String?
+  replyTo   Comment?  @relation("ReplyTo", fields: [replyToId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("ReplyTo")
+
+  votes CommentVote[]
+}
+
+model Vote {
+  user   User     @relation(fields: [userId], references: [id])
+  userId String
+  post   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+  type   VoteType
+
+  @@id([userId, postId])
+}
+
+model CommentVote {
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId String
+  type      VoteType
+
+  @@id([userId, commentId])
+}
+
+model MemoryAlbum {
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  visibility  Visibility        @default(PRIVATE) // ✅ 类型名称要和 enum 一致
+  userId      String
+  user        User              @relation(fields: [userId], references: [id])
+  items       MemoryAlbumItem[]
+  createdAt   DateTime          @default(now()) // ✅ 正确字段名应该是 createdAt
+  updatedAt   DateTime          @updatedAt @default(now())
+  
+}
+
+model MemoryAlbumItem {
+  id      String   @id @default(cuid())
+  albumId String
+  postId  String
+  note    String?
+  addedAt DateTime @default(now())
+  order     Int      @default(0) // 👈 排序用字段
+  album MemoryAlbum @relation(fields: [albumId], references: [id])
+  post  Post        @relation(fields: [postId], references: [id])
+}
+
+enum Visibility {
+  PRIVATE
+  FRIENDS
+  PUBLIC
+}

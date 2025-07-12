@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "MemoryAlbum" ADD COLUMN     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+-- AlterTable
+ALTER TABLE "MemoryAlbumItem" ADD COLUMN     "order" INTEGER NOT NULL DEFAULT 0;

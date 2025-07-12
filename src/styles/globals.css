@@ -1,0 +1,94 @@
+/* 👇 引入 Tailwind 的三大核心功能：基础样式 / 组件样式 / 工具类 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🌈 基础层：定义 CSS 变量，用于浅色模式和深色模式的主题色配置 */
+@layer base {
+  :root {
+    /* 背景和前景（文字） */
+    --background: 0 0% 100%;               /* 页面整体背景 - 白色 */
+    --foreground: 222.2 84% 4.9%;          /* 文字颜色 - 深色 */
+
+    /* 中性色（用于 muted 区块） */
+    --muted: 210 40% 96.1%;                /* 中性背景（如输入框） */
+    --muted-foreground: 215.4 16.3% 46.9%; /* 中性文字颜色 */
+
+    /* 弹出层样式 */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* 卡片背景和文字 */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    /* 输入框和边框 */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    /* 主色调（按钮） */
+    --primary: 222.2 47.4% 11.2%;           /* 主按钮背景 */
+    --primary-foreground: 210 40% 98%;      /* 主按钮文字 */
+
+    /* 次要按钮 */
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    /* 高亮/强调区域 */
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    /* 危险操作（如删除） */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* 聚焦边框（输入框聚焦时的光环） */
+    --ring: 215 20.2% 65.1%;
+
+    /* 全局圆角 */
+    --radius: 0.5rem;
+  }
+
+  /* 🌙 深色模式下的变量覆盖（.dark 类控制） */
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+
+    --ring: 217.2 32.6% 17.5%;
+  }
+}
+
+/* 🧱 应用全局样式：设置默认边框颜色和页面背景 */
+@layer base {
+  * {
+    @apply border-border; /* 所有组件的边框都使用自定义变量 border */
+  }
+
+  body {
+    @apply bg-background text-foreground; /* 设置页面背景和字体颜色 */
+  }
+}
