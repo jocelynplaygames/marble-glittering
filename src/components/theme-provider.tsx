@@ -1,3 +1,5 @@
+//components/theme-providers.tsx
+//提供 Tailwind / Shadcn 的 dark/light 切换
 "use client";
 
 import {

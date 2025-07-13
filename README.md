@@ -1,6 +1,6 @@
 # Marble Glittering ✨
 
-A full-stack Reddit-style web application built with **Next.js**, **Tailwind CSS**, **PostgreSQL**, and **Prisma**. It features a polished Neumorphism UI and supports post creation, community building, and a powerful memory album system.
+A full-stack Reddit-style web application built with **Next.js**, **Tailwind CSS**, **PostgreSQL**, and **Prisma**. It features a polished pixel UI and supports post creation, community building, and a powerful memory album system.
 🎯 The vision is to build a platform that combines **social interaction** and **personal digital archiving** — enabling users to engage in communities while also privately recording thoughts, inspirations, and life moments.
 
 ## 🌟 Features

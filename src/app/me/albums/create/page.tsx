@@ -1,21 +1,23 @@
-"use client";
 //创建新专辑
+//app/me/albums/create/page.tsx
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Input } from "~/components/ui/input";
-import { Textarea } from "~/components/ui/textarea";
-import { Button } from "~/components/ui/button";
+// import { Input } from "~/components/ui/input";
+// import { Textarea } from "~/components/ui/textarea";
+// import { Button } from "~/components/ui/button";
+import { MemoryAlbumForm, type MemoryAlbumFormValues } from "~/components/memory/MemoryAlbumForm";
 
 export default function CreateAlbumPage() {
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (data: MemoryAlbumFormValues) => {
     const res = await fetch("/api/memory/create", {
       method: "POST",
-      body: JSON.stringify({ title: name, desc: note }),
+      body: JSON.stringify({ title: data.name, desc: data.description, visibility: data.visibility}),
       headers: { "Content-Type": "application/json" },
     });
 
@@ -26,23 +28,11 @@ export default function CreateAlbumPage() {
     }
   };
 
-  return (
+   return (
     <div className="max-w-xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">创建新专辑</h1>
 
-      <div className="space-y-4">
-        <div>
-          <label className="text-sm font-medium">名称</label>
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
-        </div>
-
-        <div>
-          <label className="text-sm font-medium">备注（可选）</label>
-          <Textarea value={note} onChange={(e) => setNote(e.target.value)} />
-        </div>
-
-        <Button onClick={handleSubmit}>创建</Button>
-      </div>
+      <MemoryAlbumForm onSubmit={handleSubmit} />
     </div>
   );
 }

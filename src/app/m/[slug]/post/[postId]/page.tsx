@@ -22,7 +22,7 @@ import { redis } from "~/lib/redis";
 import { prisma } from "~/server/db";
 import { type CachedPost } from "~/types/redis";//Redis 缓存中使用的 CachedPost 类型，用于类型安全。从文件 ~/types/redis.ts 中引入类型 CachedPost，只引入类型，不引入实际代码
 
-import { SaveToAlbumButton } from "~/components/ui/SaveToAlbumButton";
+import { SaveToAlbumButton } from "~/components/memory/SaveToAlbumButton";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
@@ -60,11 +60,11 @@ function PostVoteShell() {
 //✅ 页面主组件定义：异步服务器组件，接收 postId，用来加载帖子详情页。
 //这个函数是服务端运行的 React 组件，名字叫 PostDetailPage，会在用户访问 /m/slug/postId 时被调用。
 export default async function PostDetailPage({
-  params: {postId },
+  params,
 }: PostDetailPageProps) {
   // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
   //const cachedPost = (await redis.hgetall(`post:${postId}`)) as CachedPost;//这句尝试从 Redis 读取缓存，但：如果 Redis 没连上或未初始化
-
+  const { slug, postId } = params; 
   //🔄 Redis 缓存读取✅ 数据来源一：Redis 缓存
   let cachedPost: CachedPost | null = null;//声明一个变量，先准备一个“空桶”；cachedPost：尝试从 Redis 获取的缓存数据（结构较轻）
   let post: (Post & { votes: Vote[]; author: User }) | null = null;//post：从数据库获取的完整帖子数据（含 votes 和 author）
@@ -81,6 +81,7 @@ export default async function PostDetailPage({
   //🔄 数据库读取（如果缓存失败）✅ 数据来源二：数据库（通过 Prisma 查询）
   if (!cachedPost) {
     try{
+
       post = await prisma.post.findFirst({//查询结果返回给 post 变量，如果找不到会返回 null
         where: {
           id: postId,//调用 Prisma ORM 访问数据库：查找 Post 表中 ID 为 postId 的记录
@@ -88,10 +89,16 @@ export default async function PostDetailPage({
         include: {
           votes: true,
           author: true,
+          marble: true,
         },
       });
     } catch(err){
       console.error("DB fetch failed", err);
+    }
+
+     // ❗先判断是否找到 post，再验证 slug 是否一致
+    if (!post || post.marble?.slug !== slug) {
+      return notFound();
     }
 
     if (post) {//詳情頁查不到快取 → 查 DB → 自動補回快取
@@ -106,7 +113,8 @@ export default async function PostDetailPage({
   }
 
 
-
+  
+  if (post && post.marble?.slug !== slug) return notFound();// 第二个保险措施：缓存数据存在但不匹配 URL 也拦掉
   //❌ 如果 Redis 和 DB 都查不到，就返回 404
   if (!post && !cachedPost) return notFound();
 

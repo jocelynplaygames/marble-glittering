@@ -1,5 +1,4 @@
 import Link from "next/link";
-
 //import { Icons } from "~/components/icons";
 import { ModeToggle } from "~/components/mode-toggle";
 import { SearchBar } from "~/components/search-bar";
@@ -7,6 +6,7 @@ import { buttonVariants } from "~/components/ui/button";
 import { UserAccountNav } from "~/components/user-account-nav";
 import { getServerAuthSession } from "~/server/auth";
 import Image from "next/image";
+import { ThemeToggleButton } from "~/components/ui/pixel_theme/toggle-button";
 
 export async function Navbar() {
   const session = await getServerAuthSession();
@@ -35,7 +35,7 @@ export async function Navbar() {
         {/* Actions */}
         <div className="flex justify-between gap-2">
           <ModeToggle />
-
+          <ThemeToggleButton /> {/* ✅ 主题切换按钮放这更合理 */}
           {session?.user ? (
             <UserAccountNav user={session.user} />
           ) : (

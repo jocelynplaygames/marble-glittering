@@ -1,37 +1,51 @@
-//支持拖动的单个卡片
-// components/SortableItem.tsx
+//支持拖动的单个卡片,拖拽列表中的单个项（每个保存的 Post）
+// components/memory/SortableItem.tsx
 "use client";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import Link from "next/link";
+import { format } from "date-fns";
 
-export function SortableItem({ item, updateNote, deleteItem }) {
+
+export function SortableItem({ item, albumId, updateNote, deleteItem }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+  const slug = item.post?.marble?.slug;
+  const postId = item.post?.id;
+  const title = item.post?.title;
 
   return (
     <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
       className="border rounded-lg p-4 shadow bg-white"
     >
-      <a href={`/m/${item.post.marbleId}/post/${item.postId}`}>
-        <h2 className="text-lg font-semibold hover:underline">{item.post.title}</h2>
-      </a>
+      {/* 只让这个可拖动 */}
+      <div className="cursor-move text-gray-400 text-sm mb-2" {...attributes} {...listeners}>
+        ☰ 拖动
+      </div>
+      
+      {slug && postId ? (
+        <Link href={`/m/${slug}/post/${postId}`}>
+          <h2 className="text-lg font-semibold hover:underline">{title}</h2>
+        </Link>
+      ) : (
+        <h2 className="text-lg font-semibold text-gray-400">{title ?? "无标题帖子"}</h2>
+      )}
 
       <p className="text-sm text-gray-600 mt-1">
-        Saved at: {new Date(item.addedAt).toLocaleString()}
+        Saved at: {format(new Date(item.addedAt), "yyyy-MM-dd HH:mm:ss")}
       </p>
 
       {/* 编辑备注 */}
-      <form action={updateNote} className="mt-4 flex flex-col gap-2">
+      <form className="mt-4 flex flex-col gap-2" action={updateNote}>
         <input type="hidden" name="itemId" value={item.id} />
+        <input type="hidden" name="albumId" value={albumId} /> 
         <label className="text-sm font-medium">Note</label>
         <textarea
           name="note"

@@ -1,3 +1,8 @@
+//实现一个 无限滚动加载（infinite scroll）的帖子列表
+//使用 @tanstack/react-query 实现分页加载。
+// 使用 @mantine/hooks 的 useIntersection 实现滚动触底检测。
+// 支持通过 marbleName 过滤帖子（可选）。
+// 当用户滚动到页面底部时自动加载下一页内容。
 "use client";
 
 import { useEffect, useRef } from "react";
@@ -24,9 +29,11 @@ export function PostFeed({ initialPosts, marbleName }: PostFeedProps) {
   });
   const { data: session } = useSession();
 
-  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
-    ["infinite-query"],
+  // 使用带 marbleName 的 query key
+  const queryKey = ["infinite-query", marbleName];
 
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+    queryKey,
     async ({ pageParam = 1 }) => {
       const query =
         `/api/posts?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}` +
@@ -38,9 +45,7 @@ export function PostFeed({ initialPosts, marbleName }: PostFeedProps) {
     },
 
     {
-      getNextPageParam: (_, pages) => {
-        return pages.length + 1;
-      },
+      getNextPageParam: (_, pages) => pages.length + 1,
       initialData: { pages: [initialPosts], pageParams: [1] },
     },
   );

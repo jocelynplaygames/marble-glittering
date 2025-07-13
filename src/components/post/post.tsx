@@ -1,3 +1,4 @@
+//components/post/post.tsx
 import { useRef } from "react";
 import Link from "next/link";
 import type { Post, User, Vote } from "@prisma/client";
@@ -6,18 +7,20 @@ import { EditorOutput } from "~/components/editor-output";
 import { Icons } from "~/components/icons";
 import { PostVoteClient } from "~/components/post-vote/post-vote-client";
 import { formatTimeToNow } from "~/lib/utils";
-import { SaveToAlbumButton } from "~/components/ui/SaveToAlbumButton";
+import { SaveToAlbumButton } from "~/components/memory/SaveToAlbumButton";
 import { useSession } from "next-auth/react";
+
 
 type PartialVote = Pick<Vote, "type">;
 
 interface PostProps {
+
   post: Post & {
     author: User;
     votes: Vote[];
   };
   voteCount: number;
-  marbleName: string;
+  slug: string;
   currentVote?: PartialVote;
   commentCount: number;
 }

@@ -1,10 +1,16 @@
+//components/memory/SaveToAlbumButton
+//帖子详情页中的“收藏到专辑”按钮（弹出对话框、选择专辑、备注、提交）
 "use client";
 
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "./dialog";
-import { Input } from "./input";
-import { Button } from "./button";
-import { Textarea } from "./textarea";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { Input } from "../ui/input";
+// import { Button } from "../ui/button";
+import { Button } from "~/components";
+
+import { Textarea } from "../ui/textarea";
+import { MemoryAlbumForm, type MemoryAlbumFormValues } from "./MemoryAlbumForm";
+
 
 interface Props {
   postId: string;
@@ -16,7 +22,7 @@ export function SaveToAlbumButton({ postId }: Props) {
   const [albums, setAlbums] = useState<{ id: string; name: string }[]>([]);
   const [selectedAlbumId, setSelectedAlbumId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
-  const [newAlbumName, setNewAlbumName] = useState("");
+
 
   // 获取当前用户的专辑列表
   useEffect(() => {
@@ -34,23 +40,28 @@ export function SaveToAlbumButton({ postId }: Props) {
   }, [open]);
 
   // 创建新专辑
-  const handleCreateAlbum = async () => {
-    if (!newAlbumName.trim()) return;
+  const handleCreateAlbum = async (data: MemoryAlbumFormValues) => {
+  const res = await fetch("/api/memory/create", {
+    method: "POST",
+    body: JSON.stringify({
+      title: data.name,
+      desc: data.description,
+      visibility: data.visibility,
+    }),
+    headers: { "Content-Type": "application/json" },
+  });
 
-    const res = await fetch("/api/memory/create", {
-      method: "POST",
-      body: JSON.stringify({ title: newAlbumName }),
-      headers: { "Content-Type": "application/json" },
-    });
+  if (!res.ok) {
+    alert("创建专辑失败");
+    return;
+  }
 
-    if (!res.ok) return;
+  const newAlbum = await res.json();
+  setAlbums((prev) => [...prev, newAlbum]);
+  setSelectedAlbumId(newAlbum.id);
+  setCreating(false);
+};
 
-    const newAlbum = await res.json();
-    setAlbums((prev) => [...prev, newAlbum]);
-    setSelectedAlbumId(newAlbum.id);
-    setNewAlbumName("");
-    setCreating(false);
-  };
 
   // 提交收藏
   const handleSubmit = async () => {
@@ -99,14 +110,18 @@ export function SaveToAlbumButton({ postId }: Props) {
 
           {/* 创建新专辑区域 */}
           {creating ? (
-            <div className="flex items-center gap-2">
-              <Input
-                value={newAlbumName}
-                onChange={(e) => setNewAlbumName(e.target.value)}
-                placeholder="新专辑名称"
+            <div className="border-t pt-4 mt-4">
+              <MemoryAlbumForm
+                onSubmit={handleCreateAlbum}
+                defaultValues={{ name: "", description: "", visibility: "private" }}
               />
-              <Button onClick={handleCreateAlbum}>添加</Button>
-              <Button variant="ghost" onClick={() => setCreating(false)}>取消</Button>
+              <Button
+                variant="ghost"
+                className="mt-2"
+                onClick={() => setCreating(false)}
+              >
+                取消创建
+              </Button>
             </div>
           ) : (
             <Button variant="link" onClick={() => setCreating(true)}>

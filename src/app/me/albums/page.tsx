@@ -5,11 +5,16 @@ import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { MemoryAlbumCard } from "~/components/memory/MemoryAlbumCard";
+
+
 
 type Album = {
   id: string;
   name: string;
   note?: string | null;
+  count: number;
+  visibility: "private" | "public" | "friends";
 };
 
 export default function AlbumListPage() {
@@ -53,21 +58,19 @@ export default function AlbumListPage() {
           你还没有任何专辑。点击右上角按钮创建一个吧！
         </p>
       ) : (
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {albums.map((album) => (
-            <div
-              key={album.id}
-              className="rounded border p-4 flex justify-between items-start bg-white shadow-sm"
-            >
-              <div>
-                <h2 className="font-semibold text-lg">{album.name}</h2>
-                {album.note && (
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {album.note}
-                  </p>
-                )}
-              </div>
-              <div className="space-x-2 mt-1">
+            <div key={album.id} className="relative">
+              <Link href={`/me/albums/${album.id}`}>
+                <MemoryAlbumCard
+                  name={album.name}
+                  count={album.count}
+                  visibility={album.visibility}
+                />
+              </Link>
+
+              {/* 操作按钮可以放在卡片右下角或下方 */}
+              <div className="flex gap-2 mt-2">
                 <Button asChild variant="secondary">
                   <Link href={`/me/albums/${album.id}`}>查看</Link>
                 </Button>

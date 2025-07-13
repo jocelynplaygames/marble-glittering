@@ -1,4 +1,5 @@
-// components/SortableAlbumItemList.tsx
+// components/memory/SortableAlbumItemList.tsx
+//一个专辑中的多个贴文的拖拽排序列表（封装了 DndKit）
 "use client";
 
 import {
@@ -15,6 +16,7 @@ import {
 } from "@dnd-kit/sortable";
 import { useState } from "react";
 import { SortableItem } from "./SortableItem";
+import Link from "next/link";
 
 export function SortableAlbumItemList({ items, albumId, updateNote, deleteItem }) {
   const [sortedItems, setSortedItems] = useState(items);
@@ -51,6 +53,7 @@ export function SortableAlbumItemList({ items, albumId, updateNote, deleteItem }
             <SortableItem
               key={item.id}
               item={item}
+              albumId={albumId}
               updateNote={updateNote}
               deleteItem={deleteItem}
             />

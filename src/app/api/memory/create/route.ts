@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    const { title, desc, visibility } = body
+    const { name, description, visibility } = body
 
     if (!title || typeof title !== "string") {
       return NextResponse.json({ error: "名称不能为空" }, { status: 400 })
@@ -22,8 +22,8 @@ export async function POST(req: Request) {
 
     const newAlbum = await prisma.memoryAlbum.create({
       data: {
-        name: title,
-        description: desc || null,
+        name: name,
+        description: description || null,
         visibility: visibility?.toUpperCase() || "PRIVATE",
         userId: session.user.id,
       },
