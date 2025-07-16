@@ -6,7 +6,8 @@ import { Button } from "../ui/button";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { Comment, CommentVote, User } from "@prisma/client";
 
-type NestedComment = Comment & {
+// 定义嵌套评论类型（带 replies 数组）
+export type NestedComment = Comment & {
   author: User;
   votes: CommentVote[];
   replies?: NestedComment[];
@@ -16,7 +17,7 @@ interface RecursiveCommentProps {
   comment: NestedComment;
   postId: string;
   sessionUserId?: string;
-  depth: number;
+  depth: number; // 控制缩进层级
 }
 
 export function RecursiveComment({
@@ -72,7 +73,8 @@ export function RecursiveComment({
       )}
 
       {!collapsed &&
-        comment.replies?.map((reply) => (
+        hasReplies &&
+        comment.replies!.map((reply) => (
           <RecursiveComment
             key={reply.id}
             comment={reply}

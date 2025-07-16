@@ -22,7 +22,7 @@ import { redis } from "~/lib/redis";
 import { prisma } from "~/server/db";
 import { type CachedPost } from "~/types/redis";//Redis 缓存中使用的 CachedPost 类型，用于类型安全。从文件 ~/types/redis.ts 中引入类型 CachedPost，只引入类型，不引入实际代码
 
-import { SaveToAlbumButton } from "~/components/ui/SaveToAlbumButton";
+import { SaveToAlbumButton } from "~/components/memory/SaveToAlbumButton";
 
 export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";

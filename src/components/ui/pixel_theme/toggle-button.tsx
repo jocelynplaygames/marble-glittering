@@ -6,7 +6,7 @@ export function ThemeToggleButton() {
   const { theme, toggleTheme } = useTheme();
   return (
     <button onClick={toggleTheme} className="ml-4 text-xs">
-      当前主题：{theme === "pixel" ? "🎮 像素风" : "✨ 现代风"}（点击切换）
+      Theme：{theme === "pixel" ? "🎮 pixel" : "✨ modern"}（click to change）
     </button>
   );
 }
