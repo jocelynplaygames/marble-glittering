@@ -46,12 +46,7 @@ export async function POST(req: NextRequest) {//Next.js 的 API Route 接口写�
         marbleId,
         title,
       },
-       include: {
-        author: true,
-        marble: true,
-        votes: true,
-        comments: true,
-      }
+      include:{author: true}
     });
     //new Response 是 Next.js API Route 使用的 Web 标准 Response 对象。
 
@@ -62,12 +57,7 @@ export async function POST(req: NextRequest) {//Next.js 的 API Route 接口写�
       createdAt: post.createdAt.toISOString(),
       authorUsername: post.author.username,
     });
-    return new Response(JSON.stringify(post),{
-      status: 200,
-      headers:{
-        "Content-Type": "application/json",
-      },
-    });//➡️ 发帖成功。把这段文本 OK 和状态码 200，返回给前端（浏览器、JS）,前端可以 .json() 或 .text() 拿到返回的内容,也可以用 response.status 判断是不是 200、401、500 等
+    return new Response("OK");//➡️ 发帖成功。把这段文本 OK 和状态码 200，返回给前端（浏览器、JS）,前端可以 .json() 或 .text() 拿到返回的内容,也可以用 response.status 判断是不是 200、401、500 等
   } catch (error) {
     if (error instanceof z.ZodError) {
       return new Response(error.message, { status: 400 });

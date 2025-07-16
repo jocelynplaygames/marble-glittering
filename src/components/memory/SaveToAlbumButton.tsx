@@ -1,12 +1,12 @@
 //components/memory/SaveToAlbumButton
-//帖子详情页中的“收藏到专辑”按钮（弹出对话框、选择专辑、备注、提交）
+// "Save to Album" button on post detail page (dialog, select album, add note, submit)
 "use client";
 
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { Input } from "../ui/input";
 // import { Button } from "../ui/button";
-import { Button } from "~/components";
+import { Button } from "~/components/ui/button";
 
 import { Textarea } from "../ui/textarea";
 import { MemoryAlbumForm, type MemoryAlbumFormValues } from "./MemoryAlbumForm";
@@ -24,7 +24,7 @@ export function SaveToAlbumButton({ postId }: Props) {
   const [creating, setCreating] = useState(false);
 
 
-  // 获取当前用户的专辑列表
+  // Fetch current user's albums
   useEffect(() => {
     if (open) {
       fetch("/api/memory/list")
@@ -39,31 +39,31 @@ export function SaveToAlbumButton({ postId }: Props) {
     }
   }, [open]);
 
-  // 创建新专辑
+  // Create new album
   const handleCreateAlbum = async (data: MemoryAlbumFormValues) => {
-  const res = await fetch("/api/memory/create", {
-    method: "POST",
-    body: JSON.stringify({
-      title: data.name,
-      desc: data.description,
-      visibility: data.visibility,
-    }),
-    headers: { "Content-Type": "application/json" },
-  });
+    const res = await fetch("/api/memory/create", {
+      method: "POST",
+      body: JSON.stringify({
+        title: data.name,
+        desc: data.description,
+        visibility: data.visibility,
+      }),
+      headers: { "Content-Type": "application/json" },
+    });
 
-  if (!res.ok) {
-    alert("创建专辑失败");
-    return;
-  }
+    if (!res.ok) {
+      alert("Failed to create album");
+      return;
+    }
 
-  const newAlbum = await res.json();
-  setAlbums((prev) => [...prev, newAlbum]);
-  setSelectedAlbumId(newAlbum.id);
-  setCreating(false);
-};
+    const newAlbum = await res.json();
+    setAlbums((prev) => [...prev, newAlbum]);
+    setSelectedAlbumId(newAlbum.id);
+    setCreating(false);
+  };
 
 
-  // 提交收藏
+  // Submit save to album
   const handleSubmit = async () => {
     if (!selectedAlbumId) return;
 
@@ -81,10 +81,10 @@ export function SaveToAlbumButton({ postId }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost">📌 收藏到专辑</Button>
+        <Button variant="ghost">📌 Save to Album</Button>
       </DialogTrigger>
       <DialogContent>
-        <h2 className="text-lg font-bold">📌 收藏到专辑</h2>
+        <h2 className="text-lg font-bold">📌 Save to Album</h2>
 
         <div className="space-y-3">
           {albums.length > 0 ? (
@@ -105,10 +105,10 @@ export function SaveToAlbumButton({ postId }: Props) {
               </div>
             </>
           ) : (
-            <p className="text-sm text-gray-500">你还没有任何专辑</p>
+            <p className="text-sm text-gray-500">You don't have any albums yet</p>
           )}
 
-          {/* 创建新专辑区域 */}
+          {/* Create new album section */}
           {creating ? (
             <div className="border-t pt-4 mt-4">
               <MemoryAlbumForm
@@ -120,28 +120,28 @@ export function SaveToAlbumButton({ postId }: Props) {
                 className="mt-2"
                 onClick={() => setCreating(false)}
               >
-                取消创建
+                Cancel Creation
               </Button>
             </div>
           ) : (
             <Button variant="link" onClick={() => setCreating(true)}>
-              ➕ 创建一个新专辑
+              ➕ Create New Album
             </Button>
           )}
 
           <Textarea
-            placeholder="写点备注（可选）"
+            placeholder="Add a note (optional)"
             value={note}
             onChange={(e) => setNote(e.target.value)}
           />
 
           <div className="flex justify-end">
             <Button onClick={handleSubmit} disabled={!selectedAlbumId}>
-              添加
+              Add
             </Button>
           </div>
         </div>
       </DialogContent>
     </Dialog>
   );
-}
+}    

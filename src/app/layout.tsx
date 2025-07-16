@@ -48,10 +48,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
   },
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
+  
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
@@ -60,22 +57,34 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
 };
 
+// themeColor: [
+//     { media: "(prefers-color-scheme: light)", color: "white" },
+//     { media: "(prefers-color-scheme: dark)", color: "black" },
+//   ],
+
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};
+
 // <PixelThemeProvider>   {/* ✅ 像素风主题 Provider（控制是否使用像素风） */}
 //    └── <ThemeProvider>       // 1️⃣ 提供 dark / light 模式切换功能（来自 shadcn/ui）
 //         └── <Providers>      // 2️⃣ 项目统一的全局 Provider（自定义封装） 封装 Session、Theme、PixelTheme、Toast 等全局状态的统一入口（你定义的）
 
 export default function RootLayout({ children, authModal }: RootLayoutProps) {
   return (
-    <PixelThemeProvider>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <html lang="en" suppressHydrationWarning>
-          <head />
-          <body
-            className={cn(
-              "min-h-screen bg-background pt-12 antialiased",
-              inter.className
-            )}
-          >
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body
+        className={cn(
+          "min-h-screen bg-background pt-12 antialiased",
+          inter.className
+        )}
+      >
+        <PixelThemeProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <Providers>
               <Navbar />
               {authModal}
@@ -86,9 +95,9 @@ export default function RootLayout({ children, authModal }: RootLayoutProps) {
               <TailwindIndicator />
               <Toaster />
             </Providers>
-          </body>
-        </html>
-      </ThemeProvider>
-    </PixelThemeProvider>
+          </ThemeProvider>
+        </PixelThemeProvider>
+      </body>
+    </html>
   );
 }

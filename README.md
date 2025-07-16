@@ -5,31 +5,85 @@ A full-stack Reddit-style web application built with **Next.js**, **Tailwind CSS
 
 ## 🌟 Features
 
-- ⚛️ Built with **Next.js App Router**
-- 🧁 Fully customized **Neumorphism UI**
-- 🔐 User authentication with **NextAuth.js**
+- 🧱 Framework & Core Stack
+      - ⚛️ Built with **Next.js App Router** for modern, file-based routing
+      - 💎 Type-safe backend with **tRPC** (if used) and **TypeScript**
+      - 💾 Database: **PostgreSQL** with **Prisma ORM**
+      - 📦 Ready for deployment on **Vercel**, **AWS**, or self-hosted
+      - ♻️ Performance optimization with Redis, including support for SSR response caching
+- 🔐 Authentication & Session
+      - 🔐 Secure login & session management via NextAuth.js
+      - 🔄 Session management with `getServerAuthSession()`
+      - 🚫 Redirect unauthenticated users via `useSession` + router
+      - 🔑 Protected server-side rendering (SSR) via `notFound()` or redirects
 - 📝 Create, comment, and vote on posts
-- 🏘 Community (marble-style) creation
-- 📷 Upload images with **UploadThing**
-- 🌑 Light and dark themes both follow Neumorphism
-- 🔍 Built-in search bar with live filtering
-- 💾 PostgreSQL + Prisma ORM
-- 🧠 Memory Albums (save posts, write notes, visibility control)
-- 📦 Easy deployment to Vercel, AWS, etc.
+      - 💬 Fully nested and lazy loading of child comments
+      - 🎛️ Toggleable reply threads
+      - 📷 Create posts with optional images with **UploadThing**
+      - 📉 vote on posts and comments with live state update
+      - 🔍 Built-in search bar with live filtering
+      - 🧠 Global layout with metadata, SEO tags, and OpenGraph config for social sharing
+- 🏘 Community(Marbles) creation
+      - 🏠 Join/leave communities (subscription logic)
+      - 🧭 automatic timestamping
+      - 📂 View posts scoped to a community (`/m/[marble]`)
+      - 🧰 Admin dashboard for managing users and communities
+- 🧷 Memory Albums (save posts, write notes, visibility control)
+      - 🪄 Drag-and-drop reordering
+      - 📝 Album item notes with server actions
+      - ✏️ Album editing with pre-filled forms
+      - 🔒 Per-album visibility: private / friends / public
+- 🌐 Navigation & Routing
+      - 🔗 Consistent navigation with `<Link>` and dynamic routes
+      - 🧭 CSR redirections after actions (e.g. save, login)
+      - 🚦 Permission control both on server & client side
+      - 🧱 Clear route structure for `/post/[id]`, `/m/[marble]`, `/me/albums`
+- 🧪 Developer Experience
+      - 🧪 Type-safe APIs using Next.js server actions and routes
+      - 🧩 Modular support for feature extensions via <Providers> wrapper
+      - 📚 Modular and reusable **component architecture**
+      - 🧪 Component-driven architecture for reusability and clean structure
+      - 📂 RESTful API routes for album management
+      - 📊 Analytics component for tracking user interaction
+      - 🧼 Clean data modeling with automatic `createdAt`, `updatedAt` timestamps
+      - 🔔 Toast notifications using a custom Toaster component for UX feedback
+      - 🔄 Optimistic UI updates and loading fallbacks with **React Suspense**
+      - 🧪 Integrated **unit and integration testing** with Jest + Testing Library
+- 🌙 UI/UX Design
+      - 🌑 Dual **light/dark mode** support in pixel-art style
+      - ✨ Minimalist, intuitive layout with focus on content
+      - ✨ Animated pixel-style **loading states** and UI feedback for smoother transitions
+      - 🎨 Custom global styles using Tailwind CSS
+      - 📱 Responsive design for mobile and desktop
+      - 💬 Hover states, animations, microinteractions, and error feedback
 
----
+
 
 ## 📦 Tech Stack
 
-| Layer        | Technology                            |
-|--------------|----------------------------------------|
-| Frontend     | React, Next.js, Tailwind CSS, shadcn/ui |
-| Backend      | App Router, tRPC-style handlers        |
-| Database     | PostgreSQL + Prisma ORM                |
-| Auth         | NextAuth.js                            |
-| UI Style     | Neumorphism (custom CSS + Tailwind)    |
-| Upload       | UploadThing                            |
-| Caching      | Redis (local or Upstash, optional)     |
+| **Layer**          | **Technology & Description**                                                                 |
+|--------------------|----------------------------------------------------------------------------------------------|
+| **Frontend**        | **React** + **Next.js (App Router)** — Hybrid SSR/CSR rendering with file-based routing     |
+|                    | **Tailwind CSS** — Utility-first CSS framework for rapid styling                            |
+|                    | **shadcn/ui** — Accessible, customizable, headless component primitives                      |
+|                    | **Framer Motion** — Declarative animations and smooth UI transitions                         |
+|                    | **Lucide Icons** — Modern, open-source icon set for UI consistency                           |
+| **Backend**         | App Router-based API routes (`app/api/*`) with REST-like handlers                           |
+|                    | Custom logic following **tRPC-style** patterns (structured & type-safe)                      |
+|                    | **Zod** — Runtime type validation and schema enforcement                                     |
+| **Database**        | **PostgreSQL** — Scalable relational database for structured content                        |
+|                    | **Prisma ORM** — Type-safe DB access, migrations, and query builder                         |
+| **Authentication**  | **NextAuth.js** — Pluggable authentication (OAuth, Email, Credentials)                      |
+| **Authorization**   | Custom middleware + SSR route guards (`notFound`, `redirect`, `getServerAuthSession`)       |
+| **Image Upload**    | **UploadThing** — Simple, secure file upload with auth-aware handling                       |
+| **Data Caching**    | **Redis** — (optional) Used for SSR caching or session optimization (e.g., Upstash)         |
+| **Search**          | Client-side in-memory live filtering; architecture supports **Algolia**, **Lunr.js**, etc.  |
+| **UI Style**        | **Pixel-style UI** with **Neumorphism-inspired design**, powered by Tailwind & custom CSS   |
+| **Deployment**      | Optimized for **Vercel**, also supports **AWS**, **Render**, **Docker**, or self-hosting    |
+| **Developer Tools** | **TypeScript (strict)** for full type safety across stack                                   |
+|                    | **ESLint**, **Prettier**, **Husky**, **lint-staged** for code quality and consistency        |
+|                    | **GitHub Actions** *(recommended)* for CI/CD automation                                      |
+|                    | **pnpm** for fast, efficient dependency management                                           |
 
 ---
 
@@ -209,20 +263,13 @@ The **Post** module is a core part of the Marble app. Each post belongs to a com
 
 
 
-## UI Style
-- Unified look for Button, Input, Card, Vote, etc.
-- Light & Dark modes with consistent styling
-
-## 🧭 Future Enhancements
-
+## 🌱 7. Exploratory Directions & Future Learning
 Planned features to enhance user experience, improve system scalability, and increase platform engagement.
 
-
-- 🔄 **Asynchronous Message Queue** : Route all post and comment operations through a message queue for eventual database writes. Improves performance under heavy load. | Kafka, Redis Streams, RabbitMQ
-
-- 🧠 **Recommendation System** : Provide personalized post suggestions using collaborative filtering based on user-post interaction data.    | Python, Matrix Factorization
-
-- 📝 **Structured Post Templates**: Enable users to create posts using predefined templates like to-do lists, daily journals, or Q&A formats.   | Dynamic form engine → Post parser
-
-- 🤖 **In-App Content Bots** : Deploy smart bots to suggest content, send reminders, or boost engagement through conversational prompts.   | Webhooks, Bot Service Layer, OpenAI
-
+🔄 Asynchronous Message Queue using Kafka, Redis Streams, RabbitMQ
+📝 Structured Post Templates: Create posts using predefined templates such as to-do lists with selectable options
+🫧 Private Reactions: Only you see what moved you — no public like count (data retained for recommendation system)
+📈 User Behavior Analytics: Analyze user behavior logs using PostgreSQL, ClickHouse, Supabase Realtime
+🎞️ Downloadable & Editable Memory Journals
+❤️ Personalized Recommendation System: Suggest posts based on “shared collections” and “tag similarity” using Collaborative filtering, tag similarity
+🤖 In-App Content Bots & AI-Generated Pixel Aesthetics

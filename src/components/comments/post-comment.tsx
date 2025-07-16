@@ -38,7 +38,7 @@ export function PostComment({
 }: PostCommentProps) {
   const commentRef = useRef<HTMLDivElement>(null);
   const [isReplying, setIsReplying] = useState(false);
-  const [input, setInput] = useState<string>("");
+  const [input, setInput] = useState<string>(`@${comment.author.username} `);
 
   const { data: session } = useSession();
   const router = useRouter();
@@ -70,7 +70,6 @@ export function PostComment({
     onSuccess: () => {
       router.refresh();
       setIsReplying(false);
-      setInput(""); // ✅ 清空输入框
     },
   });
 
@@ -130,23 +129,13 @@ export function PostComment({
               value={input}
               onChange={(e) => setInput(e.target.value)}
               rows={1}
-              placeholder="What are your thoughts? Ctrl+Enter to submit."
+              placeholder="What are your thoughts?"
               onFocus={(e) =>
                 e.currentTarget.setSelectionRange(
                   e.currentTarget.value.length,
                   e.currentTarget.value.length,
                 )
               }
-              onKeyDown={(e) => {
-                if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-                  if (!input) return;
-                  submitComment({
-                    postId,
-                    text: input,
-                    replyToId: comment.id,
-                  });
-                }
-              }}
             />
 
             <div className="mt-2 flex justify-end gap-2">
@@ -164,7 +153,7 @@ export function PostComment({
                   submitComment({
                     postId,
                     text: input,
-                    replyToId: comment.id, 
+                    replyToId: comment.replyToId ?? comment.id, // Default to top-level comment
                   });
                 }}
               >

@@ -1,7 +1,14 @@
-// app/api/memory/add-item/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+
 import { getServerAuthSession } from "~/server/auth";
 import { prisma } from "~/server/db";
+
+type AddItemBody = {
+  albumId: string;
+  postId: string;
+  note?: string;
+};
 
 export async function POST(req: NextRequest) {
   const session = await getServerAuthSession();
@@ -11,14 +18,13 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const body = await req.json();
+    const body = (await req.json()) as AddItemBody;
     const { albumId, postId, note } = body;
 
     if (!albumId || !postId) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    // 可选：检查是否已存在，避免重复收藏
     const exists = await prisma.memoryAlbumItem.findFirst({
       where: {
         albumId,

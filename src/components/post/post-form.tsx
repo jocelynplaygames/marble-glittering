@@ -1,4 +1,3 @@
-//components/post/post-form.tsx
 "use client";
 //表示这是个客户端组件，表示这个组件要在浏览器执行，不能在服务器端渲染（因为用到了 useEffect, useState 等 hook）。
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -21,10 +20,6 @@ import { toast } from "~/components/ui/use-toast";
 import { editorTools } from "~/lib/editor-tools";
 import { PostValidator, type PostCreationRequest } from "~/lib/validators/post";
 
-import { useQueryClient } from "@tanstack/react-query";
-
-//PostForm 并不是“直接使用”了 PostFeed，而是通过 React Query 的数据缓存系统（queryClient）间接影响它，从而实现“发帖后立即显示”的功能。
-
 type FormData = z.infer<typeof PostValidator>;
 
 //✅这个组件需要两个外部传入的参数：marbleId：你要发帖的社区 ID；slug：社区别名（如 "javascript"）
@@ -35,7 +30,7 @@ interface PostFormProps {//PostFormProps 是用来告诉 TypeScript：PostForm �
 
 //✅初始化表单功能。 PostForm 是一个发帖表单: 让用户输入「帖子标题」+「正文内容」→ 点击“Post”按钮 → 把这些数据发送给服务器
 export function PostForm({ marbleId, slug }: PostFormProps) {//定义一个React 组件，名字叫 PostForm; PostFormProps, props 传参模式
-  const queryClient = useQueryClient();
+  
   console.log("[PostForm] marbleId:", marbleId);
   console.log("[PostForm] slug:", slug);
 
@@ -73,7 +68,7 @@ export function PostForm({ marbleId, slug }: PostFormProps) {//定义一个React
       const payload: PostCreationRequest = { content, marbleId, title };//把传入的参数重新组合成一个对象，叫 payload，这是你要提交的内容。data:是后端返回的响应（例如 “OK” 或 帖子 ID）
       //用 axios.post("/api/marble/post/create", payload) 调用后端接口发帖
       const { data } = await axios.post("/api/marble/post/create", payload);// 👈 发帖请求 把帖子内容（payload）发给 /api/marble/post/create/route.ts后端对应文件; 发出 POST 请求 到 /api/marble/post/create
-      // 📍这就会自动访问：http://localhost:3000/api/marble/post/create
+      //📍这就会自动访问：http://localhost:3000/api/marble/post/create
       // Next.js 会根据你的文件夹结构：/app/api/marble/post/create/route.ts自动把这个 URL 路由到/app/api/marble/post/create/route.ts的POST代码
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -88,25 +83,14 @@ export function PostForm({ marbleId, slug }: PostFormProps) {//定义一个React
       });
     },
 
-    onSuccess: (newPost) => {//更新缓存：将新帖子添加到 PostFeed 顶部
-      queryClient.setQueryData(["infinite-query", slug], (old: any) => {
-      if (!old) return old;
-
-      return {
-        ...old,
-        pages: [
-          [newPost, ...old.pages[0]], // 插入到第一页顶部
-          ...old.pages.slice(1),
-        ],
-      };
-    });
-      // // Convert pathname `/m/community/submit` into `/m/community`
-      // console.log("[PostForm] Mutation succeeded, now pushing to:", `/m/${slug}`);
-      // //const newPathname = pathname.split("/").slice(0, -1).join("/");
-      // router.push(`/m/${slug}`);//这个项目发帖成功后是跳回“社区首页”
-      // //router.push(newPathname);
-      // //router.push(`/r/${slug}/${data.postId}`); // 跳到新帖详情页
-      // router.refresh();
+    onSuccess: () => {
+      // Convert pathname `/m/community/submit` into `/m/community`
+      console.log("[PostForm] Mutation succeeded, now pushing to:", `/m/${slug}`);
+      //const newPathname = pathname.split("/").slice(0, -1).join("/");
+      router.push(`/m/${slug}`);//这个项目发帖成功后是跳回“社区首页”
+      //router.push(newPathname);
+      //router.push(`/r/${slug}/${data.postId}`); // 跳到新帖详情页
+      router.refresh();
 
       return toast({// 弹出成功提示
         description: "Your post has been published.",
@@ -241,12 +225,6 @@ export function PostForm({ marbleId, slug }: PostFormProps) {//定义一个React
             to open the command menu.
           </p>
         </div>
-        <button
-          type="submit"
-          className="mt-4 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition"
-        >
-          Post
-        </button>
       </form>
     </div>
   );

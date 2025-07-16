@@ -7,8 +7,6 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { MemoryAlbumCard } from "~/components/memory/MemoryAlbumCard";
 
-
-
 type Album = {
   id: string;
   name: string;
@@ -43,19 +41,19 @@ export default function AlbumListPage() {
   return (
     <div className="max-w-3xl mx-auto p-6">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">📚 我的记忆专辑</h1>
+        <h1 className="text-2xl font-bold">📚 My Memory Albums</h1>
         <Button asChild>
-          <Link href="/me/albums/create">➕ 创建新专辑</Link>
+          <Link href="/me/albums/create">➕ Create New Album</Link>
         </Button>
       </div>
 
       {loading || status === "loading" ? (
-        <p className="text-muted-foreground">加载中...</p>
+        <p className="text-muted-foreground">Loading...</p>
       ) : error ? (
-        <p className="text-red-500">获取专辑失败，请稍后再试。</p>
+        <p className="text-red-500">Failed to fetch albums. Please try again later.</p>
       ) : albums.length === 0 ? (
         <p className="text-gray-500">
-          你还没有任何专辑。点击右上角按钮创建一个吧！
+          You don't have any albums yet. Click the button in the top right to create one!
         </p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -69,13 +67,13 @@ export default function AlbumListPage() {
                 />
               </Link>
 
-              {/* 操作按钮可以放在卡片右下角或下方 */}
+              {/* Action buttons can be placed at the bottom right or below the card */}
               <div className="flex gap-2 mt-2">
                 <Button asChild variant="secondary">
-                  <Link href={`/me/albums/${album.id}`}>查看</Link>
+                  <Link href={`/me/albums/${album.id}`}>View</Link>
                 </Button>
                 <Button asChild variant="outline">
-                  <Link href={`/me/albums/${album.id}/edit`}>编辑</Link>
+                  <Link href={`/me/albums/${album.id}/edit`}>Edit</Link>
                 </Button>
               </div>
             </div>

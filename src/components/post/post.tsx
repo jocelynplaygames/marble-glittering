@@ -1,4 +1,3 @@
-//components/post/post.tsx
 import { useRef } from "react";
 import Link from "next/link";
 import type { Post, User, Vote } from "@prisma/client";
@@ -10,17 +9,15 @@ import { formatTimeToNow } from "~/lib/utils";
 import { SaveToAlbumButton } from "~/components/memory/SaveToAlbumButton";
 import { useSession } from "next-auth/react";
 
-
 type PartialVote = Pick<Vote, "type">;
 
 interface PostProps {
-
   post: Post & {
     author: User;
     votes: Vote[];
   };
   voteCount: number;
-  slug: string;
+  marbleName: string;
   currentVote?: PartialVote;
   commentCount: number;
 }
@@ -33,7 +30,7 @@ export function Post({
   commentCount,
 }: PostProps) {
   const postRef = useRef<HTMLParagraphElement>(null);
-  const { data: session } = useSession();//  获取登录状态
+  const { data: session } = useSession(); // Get login status
 
   return (
     <div className="rounded-md bg-card shadow">
@@ -61,7 +58,7 @@ export function Post({
             {formatTimeToNow(new Date(post.createdAt))}
           </div>
 
-          {/* ✅ 让标题也可以点击 */}
+          {/* ✅ Make title clickable */}
           <Link href={`/m/${marbleName}/post/${post.id}`}>
             <h2 className="mt-2 text-lg font-semibold text-primary hover:underline">
               {post.title}
@@ -90,7 +87,7 @@ export function Post({
           {commentCount} comments
         </Link>
 
-        {/* ✅ 只有登录用户才能看到按钮 */}
+        {/* ✅ Only logged-in users can see the button */}
         {session?.user ? (
           <SaveToAlbumButton postId={post.id} />
         ) : (
@@ -98,10 +95,10 @@ export function Post({
             href="/sign-in"
             className="text-sm text-muted-foreground underline hover:text-primary"
           >
-            登录后可收藏
+            Sign in to save
           </Link>
         )}
       </div>
     </div>
   );
-}
+}    

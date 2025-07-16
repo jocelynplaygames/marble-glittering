@@ -1,12 +1,9 @@
-//支持拖动的单个卡片,拖拽列表中的单个项（每个保存的 Post）
-// components/memory/SortableItem.tsx
 "use client";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
 import { format } from "date-fns";
-
 
 export function SortableItem({ item, albumId, updateNote, deleteItem }) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.id });
@@ -25,24 +22,24 @@ export function SortableItem({ item, albumId, updateNote, deleteItem }) {
       style={style}
       className="border rounded-lg p-4 shadow bg-white"
     >
-      {/* 只让这个可拖动 */}
+      {/* Only this part is draggable */}
       <div className="cursor-move text-gray-400 text-sm mb-2" {...attributes} {...listeners}>
-        ☰ 拖动
+        ☰ Drag
       </div>
-      
+
       {slug && postId ? (
         <Link href={`/m/${slug}/post/${postId}`}>
           <h2 className="text-lg font-semibold hover:underline">{title}</h2>
         </Link>
       ) : (
-        <h2 className="text-lg font-semibold text-gray-400">{title ?? "无标题帖子"}</h2>
+        <h2 className="text-lg font-semibold text-gray-400">{title ?? "Untitled Post"}</h2>
       )}
 
       <p className="text-sm text-gray-600 mt-1">
         Saved at: {format(new Date(item.addedAt), "yyyy-MM-dd HH:mm:ss")}
       </p>
 
-      {/* 编辑备注 */}
+      {/* Edit note */}
       <form className="mt-4 flex flex-col gap-2" action={updateNote}>
         <input type="hidden" name="itemId" value={item.id} />
         <input type="hidden" name="albumId" value={albumId} /> 
@@ -61,7 +58,7 @@ export function SortableItem({ item, albumId, updateNote, deleteItem }) {
         </button>
       </form>
 
-      {/* 删除按钮 */}
+      {/* Delete button */}
       <form action={deleteItem} className="mt-2">
         <input type="hidden" name="itemId" value={item.id} />
         <button type="submit" className="text-sm text-red-600 hover:underline">
