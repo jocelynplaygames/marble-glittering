@@ -1,3 +1,4 @@
+//components/ui/pixel_theme/provider.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import { PixelThemeContext } from "./use-theme";
