@@ -1,6 +1,7 @@
 # Marble Glittering ✨
 
 A full-stack Reddit-style web application built with **Next.js**, **Tailwind CSS**, **PostgreSQL**, and **Prisma**. It features a polished pixel UI and supports post creation, community building, and a powerful memory album system.
+
 🎯 The vision is to build a platform that combines **social interaction** and **personal digital archiving** — enabling users to engage in communities while also privately recording thoughts, inspirations, and life moments.
 
 ## 🌟 Features
@@ -76,7 +77,7 @@ A full-stack Reddit-style web application built with **Next.js**, **Tailwind CSS
 | **Authentication**  | **NextAuth.js** — Pluggable authentication (OAuth, Email, Credentials)                      |
 | **Authorization**   | Custom middleware + SSR route guards (`notFound`, `redirect`, `getServerAuthSession`)       |
 | **Image Upload**    | **UploadThing** — Simple, secure file upload with auth-aware handling                       |
-| **Data Caching**    | **Redis** — (optional) Used for SSR caching or session optimization (e.g., Upstash)         |
+| **Data Caching**    | **Redis** — Used for SSR caching or session optimization (e.g., Upstash)         |
 | **Search**          | Client-side in-memory live filtering; architecture supports **Algolia**, **Lunr.js**, etc.  |
 | **UI Style**        | **Pixel-style UI** with **Neumorphism-inspired design**, powered by Tailwind & custom CSS   |
 | **Deployment**      | Optimized for **Vercel**, also supports **AWS**, **Render**, **Docker**, or self-hosting    |
@@ -88,13 +89,21 @@ A full-stack Reddit-style web application built with **Next.js**, **Tailwind CSS
 ## 👀 Demo
 [🎬 Click to watch demo](https://youtu.be/ngKfJ1rBvrY)
 
-![community feed](./devuser-images/community feed.png)
-![post page](./devuser-images/post page.png)
-![writing post](./devuser-images/writing post.png)
-![creat community](./devuser-images/creat community.png)
-![](./devuser-images/)
-![personal albums](./devuser-images/personal albums.png)
-![save to album](./devuser-images/save to album.png)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ngKfJ1rBvrY/0.jpg)](https://www.youtube.com/watch?v=ngKfJ1rBvrY)
+
+<table>
+  <tr>
+    <td><img src="./devuser-images/community feed.png" width="200"/></td>
+    <td><img src="./devuser-images/post page.png" width="200"/></td>
+    <td><img src="./devuser-images/writing post.png" width="200"/></td>
+  </tr>
+  <tr>
+    <td><img src="./devuser-images/creat community.png" width="200"/></td>
+    <td><img src="./devuser-images/personal albums.png" width="200"/></td>
+    <td><img src="./devuser-images/save to album.png" width="200"/></td>
+  </tr>
+</table>
+
 ---
 
 ## 🚀 Getting Started
@@ -108,13 +117,25 @@ To run it locally, follow the steps below:
    git clone https://github.com/jocelynplaygames/marble-glittering.git
 
    # Install dependencies
-   pnpm i
+   npm install -g pnpm
+
+   #verify the installation
+   pnpm -v
    ```
 
-2. Copy `.env.example` to `.env` and update the variables.
-
+2. Run PostgreSQL and Redis Containers (Docker) and Update the .env File
    ```bash
-   cp .env.example .env
+      # NextAuth GitHub Provider
+      GITHUB_CLIENT_ID=""
+      GITHUB_CLIENT_SECRET=""
+      
+      # UploadThing
+      UPLOADTHING_APP_ID=""
+      UPLOADTHING_SECRET=""
+      
+      # Upstash
+      UPSTASH_REDIS_REST_URL=""
+      UPSTASH_REDIS_REST_TOKEN=""
    ```
 
 3. Sync the Prisma schema with your database
@@ -126,6 +147,7 @@ To run it locally, follow the steps below:
 4. Start the development server:
 
    ```bash
+   docker start marble-postgresql
    pnpm dev
    ```
 
@@ -137,7 +159,7 @@ Future enhancements are planned but development has not yet started.
 
 ## Project Structure
    ### 🧱 App Directory Structure
-      ```bash
+      
       app/
       ├── layout.tsx                           # 🧱 Base layout
       ├── page.tsx                             # 🏠 Homepage
@@ -168,10 +190,10 @@ Future enhancements are planned but development has not yet started.
       │   ├── post/                            # 📝 Post-related APIs (create, edit, delete)
       │   ├── auth/                            # 🔐 Auth/session endpoints
       │   └── uploadthing/                     # 📷 Upload image support
-      ```
+
 
    ### 🧩 Shared Components
-      ```bash
+
       components/
       ├── ui/
       │   ├── SaveToAlbumButton.tsx            # 📌 Save post to album button
@@ -180,14 +202,14 @@ Future enhancements are planned but development has not yet started.
       ├── user-account-nav.tsx                 # 👤 User avatar dropdown menu
       ├── post-card.tsx                        # 📝 Post preview card (optional)
       ├── community-sidebar.tsx                # 🧑‍🤝‍🧑 Sidebar: joined communities
-      ```
+
 
    ### 🧬 Prisma Schema & Models
-      ```bash
+
       prisma/
       ├── schema.prisma                        # 🧬 Prisma schema
       ├── migrations/                          # 🛠️ DB migrations
-      ```
+
 
 
 ## 🌱 Exploratory Directions & Future Learning
