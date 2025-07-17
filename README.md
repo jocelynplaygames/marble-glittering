@@ -83,8 +83,18 @@ A full-stack Reddit-style web application built with **Next.js**, **Tailwind CSS
 | **Developer Tools** | **TypeScript (strict)** for full type safety across stack                                   |
 |                    | **ESLint**, **Prettier**, **Husky**, **lint-staged** for code quality and consistency        |
 |                    | **GitHub Actions** *(recommended)* for CI/CD automation                                      |
-|                    | **pnpm** for fast, efficient dependency management                                           |
+|                    | **pnpm** for fast, efficient dependency management                                           
 
+## 👀 Demo
+[🎬 Click to watch demo](https://youtu.be/ngKfJ1rBvrY)
+
+![community feed](./devuser-images/community feed.png)
+![post page](./devuser-images/post page.png)
+![writing post](./devuser-images/writing post.png)
+![creat community](./devuser-images/creat community.png)
+![](./devuser-images/)
+![personal albums](./devuser-images/personal albums.png)
+![save to album](./devuser-images/save to album.png)
 ---
 
 ## 🚀 Getting Started
@@ -180,6 +190,19 @@ Future enhancements are planned but development has not yet started.
       ```
 
 
+## 🌱 Exploratory Directions & Future Learning
+Planned features to enhance user experience, improve system scalability, and increase platform engagement.
+
+- 🔄 Asynchronous Message Queue using Kafka, Redis Streams, RabbitMQ
+- 📝 Structured Post Templates: Create posts using predefined templates such as to-do lists with selectable options
+- 🫧 Private Reactions: Only you see what moved you — no public like count (data retained for recommendation system)
+- 📈 User Behavior Analytics: Analyze user behavior logs using PostgreSQL, ClickHouse, Supabase Realtime
+- 🎞️ Downloadable & Editable Memory Journals
+- ❤️ Personalized Recommendation System: Suggest posts based on “shared collections” and “tag similarity” using Collaborative filtering, tag similarity
+- 🤖 In-App Content Bots & AI-Generated Pixel Aesthetics
+
+
+
 # 🔧 System Event Flow (Key Functional Events)
 
 ## Business Event
@@ -261,15 +284,3 @@ The **Post** module is a core part of the Marble app. Each post belongs to a com
 | POST    | `/api/memory/add-item`    | Add post to album                |
 | PATCH   | `/api/memory/reorder`     | Reorder album items (future)     |
 
-
-
-## 🌱 7. Exploratory Directions & Future Learning
-Planned features to enhance user experience, improve system scalability, and increase platform engagement.
-
-🔄 Asynchronous Message Queue using Kafka, Redis Streams, RabbitMQ
-📝 Structured Post Templates: Create posts using predefined templates such as to-do lists with selectable options
-🫧 Private Reactions: Only you see what moved you — no public like count (data retained for recommendation system)
-📈 User Behavior Analytics: Analyze user behavior logs using PostgreSQL, ClickHouse, Supabase Realtime
-🎞️ Downloadable & Editable Memory Journals
-❤️ Personalized Recommendation System: Suggest posts based on “shared collections” and “tag similarity” using Collaborative filtering, tag similarity
-🤖 In-App Content Bots & AI-Generated Pixel Aesthetics

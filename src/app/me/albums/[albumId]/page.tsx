@@ -32,6 +32,8 @@ export async function deleteItem(formData: FormData) {
   });
 
   revalidatePath(`/me/albums/${albumId}`);
+  redirect(`/me/albums`); // ✅ 回退到所有相册列表页
+
 }
 
 export default async function AlbumDetailPage({ params }: { params: { albumId: string } }) {
