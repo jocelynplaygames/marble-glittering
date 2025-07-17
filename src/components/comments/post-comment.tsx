@@ -9,7 +9,8 @@ import { useSession } from "next-auth/react";
 
 import { CommentVotes } from "~/components/comments/comment-votes";
 import { Icons } from "~/components/icons";
-import { Button } from "~/components/ui/button";
+// import { Button } from "~/components/ui/button";
+import { Button } from "~/components/client-only";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
 import { toast } from "~/components/ui/use-toast";

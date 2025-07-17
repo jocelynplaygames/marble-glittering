@@ -31,7 +31,6 @@ const variantMap: Record<string, string> = {
   warning: "bg-yellow-400 text-black hover:bg-yellow-500 after:shadow-[inset_-4px_-4px_#92400e] hover:after:shadow-[inset_-6px_-6px_#92400e]",
   error: "bg-red-500 text-white hover:bg-red-600 after:shadow-[inset_-4px_-4px_#7f1d1d] hover:after:shadow-[inset_-6px_-6px_#7f1d1d]",
 };
-
 export const PixelButton = ({
   children,
   className,
@@ -47,7 +46,7 @@ export const PixelButton = ({
       disabled={disabled || isLoading}
       {...props}
       className={cn(
-        "relative inline-flex items-center gap-2 font-press border border-black text-shadow",
+        "relative inline-flex items-center gap-2 font-pixel border border-black text-shadow tracking-tight",
         "after:content-[''] after:absolute after:inset-[-4px] after:pointer-events-none after:z-[-1]",
         "active:after:inset-[2px]",
         "disabled:opacity-50 disabled:cursor-not-allowed",
@@ -60,14 +59,13 @@ export const PixelButton = ({
         <span className="animate-pulse">⏳</span>
       ) : (
         <>
-          {icon ?? <StarIcon className="w-3 h-3" />}{/*如果用户传入 icon 就渲染，否则默认显示 <StarIcon />。📌 用的是 React 的灵活性 + 插槽模式，你可以放任意图标：emoji / SVG / NES 图标都 OK。*/}
+          {icon ?? <StarIcon className="w-3 h-3" />}
           {children}
         </>
       )}
     </button>
   );
 };
-
 
 
 // buttons.template.js

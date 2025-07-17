@@ -1,6 +1,6 @@
 //app/layout.tsx
 //是一个 Next.js 应用的根布局（Root Layout），通常用于定义网站的整体结构，比如 <html>、<body> 的内容、全局字体、主题、导航栏等。
-
+import { pressStart2P } from "./fonts"; // 顶部添加
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -75,7 +75,7 @@ export const viewport = {
 
 export default function RootLayout({ children, authModal }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en"className={pressStart2P.variable}> {/* ⬅️ 添加 class */}
       <head />
       <body
         className={cn(

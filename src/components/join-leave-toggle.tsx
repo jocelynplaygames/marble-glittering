@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 
-import { Button } from "~/components/ui/button";
+// import { Button } from "~/components/ui/button";
+import { Button } from "~/components/client-only";
 import { useToast } from "~/components/ui/use-toast";
 import { useCustomToasts } from "~/hooks/use-custom-toasts";
 import { type SubscribeToMarblePayload } from "~/lib/validators/marble";

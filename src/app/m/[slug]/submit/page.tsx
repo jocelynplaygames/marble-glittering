@@ -7,7 +7,8 @@ import { notFound } from "next/navigation";//notFound()：如果社区没找到�
 import type { Metadata } from "next";
 
 import { Icons, PostForm } from "~/components";//PostForm：就是你写的发帖组件（标题+正文+提交）
-import { Button } from "~/components/ui/button";
+// import { Button } from "~/components/ui/button";
+import { Button } from "~/components/client-only";
 import { prisma } from "~/server/db";//prisma：连接数据库，查出你要发帖的 社区信息
 
 // interface PageProps {

@@ -14,9 +14,9 @@ export function MemoryAlbumCard({ name, count, visibility }: MemoryAlbumCardProp
   };
 
   return (
-    <div className="p-4 bg-white shadow rounded hover:bg-gray-50 transition">
-      <h2 className="text-lg font-semibold">{name}</h2>
-      <p className="text-sm text-muted-foreground">
+    <div className="p-4 rounded shadow transition bg-white hover:bg-gray-50 dark:bg-zinc-900 dark:hover:bg-zinc-800">
+      <h2 className="text-lg font-semibold text-black dark:text-white">{name}</h2>
+      <p className="text-sm text-muted-foreground dark:text-zinc-400">
         {count} posts - {visibilityLabel[visibility]}
       </p>
     </div>

@@ -1,5 +1,6 @@
 import { CustomFeed, GeneralFeed, Icons } from "~/components";
-import { buttonVariants } from "~/components/ui/button";
+// import { buttonVariants } from "~/components/ui/button";
+import { Button } from "~/components/client-only";
 import { getServerAuthSession } from "~/server/auth";
 import { CommunitySidebar } from "~/components/community-sidebar"; // 👈 这是服务端组件
 import Link from "next/link";
@@ -36,15 +37,9 @@ export default async function Home() {
 
               <div className="py-3">
                   {/*跳转到创建社区页面*/}
-                <Link
-                  href="/m/create"
-                  className={buttonVariants({
-                    className: "mb-4 mt-2 w-full",
-                    variant: "secondary",
-                  })}
-                >
-                  Create Community
-                </Link>
+                <Button asChild variant="secondary" className="mb-4 mt-2 w-full">
+                  <Link href="/m/create">Create Marble Community</Link>
+                </Button>
               </div>
             </div>
           </div>

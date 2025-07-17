@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 
-import { Button } from "~/components/ui/button";
+// import { Button } from "~/components/ui/button";
+import { Button } from "~/components/client-only";
 import { useToast } from "~/components/ui/use-toast";
 import { cn } from "~/lib/utils";
 

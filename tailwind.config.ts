@@ -12,7 +12,12 @@ export default withUt({
         "2xl": "1400px",
       },
     },
+    
     extend: {
+       fontFamily: {
+        pixel: ["var(--font-pixel)", "monospace"],
+      },
+      
       colors: {
         // 原有色彩配置
         border: "hsl(var(--border))",

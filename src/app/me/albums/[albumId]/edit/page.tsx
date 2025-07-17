@@ -35,7 +35,7 @@ export default async function EditAlbumPage({ params }: { params: { albumId: str
 
    return (
     <div className="max-w-xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">✏️ 编辑专辑</h1>
+      <h1 className="text-2xl font-bold mb-4">✏️ edit albums</h1>
 
       {/* 传入 defaultValues 预填表单内容 */}
       <MemoryAlbumForm

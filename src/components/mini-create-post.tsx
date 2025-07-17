@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import { type Session } from "next-auth";
 
 import { Icons } from "~/components/icons";
-import { Button } from "~/components/ui/button";
+// import { Button } from "~/components/ui/button";
+import { Button } from "~/components/client-only";
 import { Input } from "~/components/ui/input";
 import { UserAvatar } from "~/components/user-avatar";
 

@@ -5,8 +5,7 @@
 import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { Input } from "../ui/input";
-// import { Button } from "../ui/button";
-import { Button } from "~/components/ui/button";
+import { Button } from "~/components/client-only";
 
 import { Textarea } from "../ui/textarea";
 import { MemoryAlbumForm, type MemoryAlbumFormValues } from "./MemoryAlbumForm";

@@ -6,7 +6,8 @@ import { useMutation } from "@tanstack/react-query";//React Query 提供的函�
 import axios, { AxiosError } from "axios";//用于发送 POST 请求到 API
 
 //你自定义或封装过的 UI 组件和工具
-import { Button } from "~/components/ui/button";
+// import { Button } from "~/components/ui/button";
+import { Button } from "~/components/client-only";
 import { Input } from "~/components/ui/input";
 import { toast } from "~/components/ui/use-toast";
 import { useCustomToasts } from "~/hooks/use-custom-toasts";

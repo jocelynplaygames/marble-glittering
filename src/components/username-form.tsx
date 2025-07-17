@@ -8,7 +8,8 @@ import axios, { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
 
-import { Button } from "~/components/ui/button";
+// import { Button } from "~/components/ui/button";
+import { Button } from "~/components/client-only";
 import {
   Card,
   CardContent,

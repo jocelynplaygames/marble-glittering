@@ -2,11 +2,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* ✅ 像素字体引入 */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 
-/* ✅ 像素主题字体类 */
+/* ✅ 像素字体类 */
 .font-press {
   font-family: 'Press Start 2P', monospace;
 }
@@ -15,7 +13,6 @@
 .text-shadow {
   text-shadow: 1px 1px black;
 }
-
 
 /* 🌈 基础层：定义 CSS 变量，用于浅色模式和深色模式的主题色配置 */
 @layer base {
@@ -108,8 +105,7 @@
   }
 }
 
-
-/* ✅ NES 像素风主题容器（类名开头 .pixel-theme） */
+/* ✅ NES 像素风主题类定义 */
 @layer components {
   .pixel-theme {
     @apply font-press text-shadow;
